@@ -7,6 +7,8 @@ import com.note.developers.repositories.NoteRepository;
 import com.note.developers.repositories.UserInfoRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -42,4 +44,18 @@ public class NoteController {
         Optional<NoteDTO> noteById = this.noteRepository.findById((int)id);
         return noteById;
     }
+
+    @PostMapping(path = "update")
+    public ResponseEntity<NoteDTO> update(@RequestBody NoteDTO note){
+        Optional<NoteDTO> noteFromDb = this.noteRepository.findById(note.id);
+        if(noteFromDb.isPresent() == false){
+            return ResponseEntity.badRequest().body(null);
+        }
+        noteFromDb.get().code = note.code;
+        NoteDTO save = this.noteRepository.save(noteFromDb.get());
+
+        return ResponseEntity.ok(save);
+
+    }
+
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -49,7 +50,16 @@ public class NoteController {
     @GetMapping(path = "get")
     public Optional<NoteDTO> getById(@RequestParam Integer id){
         Optional<NoteDTO> noteById = this.noteRepository.findById((int)id);
+
         return noteById;
+
+    }
+
+    @GetMapping(path = "getByUser")
+    public List<NoteDTO> getByUserId(@RequestParam Integer userId){
+
+        List<NoteDTO> byUser = this.noteRepository.findByUser_Id(userId);
+        return byUser;
 
     }
 

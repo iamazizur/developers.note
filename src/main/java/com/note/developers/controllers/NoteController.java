@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -33,6 +36,8 @@ public class NoteController {
             return;
         }
 
+        if(note.id == 0)
+            note.creationTime = LocalDateTime.now();
 
         NoteDTO save = this.noteRepository.save(note);
 

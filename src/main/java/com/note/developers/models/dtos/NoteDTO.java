@@ -3,7 +3,7 @@ package com.note.developers.models.dtos;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Entity(name = "note")
 public class NoteDTO {
@@ -15,7 +15,8 @@ public class NoteDTO {
    @ManyToOne
    @JoinColumn(name = "user")
     public UserInfoDTO user;
-
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
+   public List<SubNoteDTO> subnotes;
 
    @Column(name="title",nullable = false)
    public String title;

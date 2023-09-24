@@ -2,18 +2,14 @@ package com.note.developers.controllers;
 
 
 import com.note.developers.models.dtos.NoteDTO;
-import com.note.developers.models.dtos.UserInfoDTO;
+import com.note.developers.models.dtos.SubNoteDTO;
 import com.note.developers.repositories.NoteRepository;
 import com.note.developers.repositories.UserInfoRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -38,6 +34,12 @@ public class NoteController {
 
         if(note.id == 0)
             note.creationTime = LocalDateTime.now();
+        if(note.subnotes != null){
+            for(SubNoteDTO subnote : note.subnotes){
+                subnote.note = note;
+            }
+        }
+
 
         NoteDTO save = this.noteRepository.save(note);
 
@@ -48,6 +50,7 @@ public class NoteController {
     public Optional<NoteDTO> getById(@RequestParam Integer id){
         Optional<NoteDTO> noteById = this.noteRepository.findById((int)id);
         return noteById;
+
     }
 
     @PostMapping(path = "update")
